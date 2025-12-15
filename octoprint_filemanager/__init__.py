@@ -184,6 +184,7 @@ class FilemanagerPlugin(octoprint.plugin.TemplatePlugin,
 			self._plugin_manager.send_plugin_message(self._identifier, dict(type="done", workerID=workerID))
 
 	@octoprint.plugin.BlueprintPlugin.route("/files/<string:target>/bulkOperation", methods=["POST"])
+	@octoprint.plugin.BlueprintPlugin.csrf_exempt()
 	@restricted_access
 	def bulkOperation(self, target):
 		if target not in [FileDestinations.LOCAL, FileDestinations.SDCARD]:
@@ -209,6 +210,7 @@ class FilemanagerPlugin(octoprint.plugin.TemplatePlugin,
 		return make_response("WorkerID: %d" % worker, 202)
 
 	@octoprint.plugin.BlueprintPlugin.route("/files/<string:target>/<path:filename>", methods=["POST"])
+	@octoprint.plugin.BlueprintPlugin.csrf_exempt()
 	@restricted_access
 	def gcodeFileCommand(self, target, filename):
 		if target not in [FileDestinations.LOCAL]:
