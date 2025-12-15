@@ -307,7 +307,21 @@ $(function() {
                 command: "uploadSd"
             };
 
-            OctoPrint.postJson(self.API_FILESURL + "local/" + path, data);
+            OctoPrint.postJson(self.API_FILESURL + "local/" + path, data)
+                .done(function() {
+                    new PNotify({
+                        title: gettext("Success"),
+                        text: gettext("File uploaded to SD card"),
+                        type: "success"
+                    });
+                })
+                .fail(function(xhr) {
+                    new PNotify({
+                        title: gettext("Upload failed"),
+                        text: gettext("Could not upload file to SD card: ") + (xhr.responseText || "Unknown error"),
+                        type: "error"
+                    });
+                });
         };
         self.remove = function() {
             if (!self.enableRemove())
@@ -328,7 +342,14 @@ $(function() {
 
                 _.each(sortedByOrigins, function (value, key) {
                     var data = {command: "delete", sources: value};
-                    OctoPrint.postJson(self.API_FILESURL + key + "/bulkOperation", data);
+                    OctoPrint.postJson(self.API_FILESURL + key + "/bulkOperation", data)
+                        .fail(function(xhr) {
+                            new PNotify({
+                                title: gettext("Delete failed"),
+                                text: gettext("Could not delete files: ") + (xhr.responseText || "Unknown error"),
+                                type: "error"
+                            });
+                        });
                 });
             }
             else {
@@ -426,7 +447,14 @@ $(function() {
 
             var action = function(data) {
                 if (data.sources.length > 1) {
-                    OctoPrint.postJson(self.API_FILESURL + "local/bulkOperation", data);
+                    OctoPrint.postJson(self.API_FILESURL + "local/bulkOperation", data)
+                        .fail(function(xhr) {
+                            new PNotify({
+                                title: gettext("Operation failed"),
+                                text: gettext("Could not complete operation: ") + (xhr.responseText || "Unknown error"),
+                                type: "error"
+                            });
+                        });
                 }
                 else {
                     if (data.command == "copy") {
