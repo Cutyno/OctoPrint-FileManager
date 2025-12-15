@@ -145,10 +145,17 @@ class FilemanagerPlugin(octoprint.plugin.TemplatePlugin,
 		return -1
 
 	def _resetWorkerProgress(self, workerID):
+		if not (0 <= workerID < len(self.workerProgress)):
+			print(f"Invalid workerID {workerID} in _resetWorkerProgress")
+			return
 		with self._get_workerProgress_lock(workerID):
 			self.workerProgress[workerID] = dict(command="", progress=0, lastfile="")
 
 	def _bulkOperationThread(self, workerID, target, command, sources, destinations):
+		if not (0 <= workerID < len(self.workerBusy)):
+			print(f"Invalid workerID {workerID} in _bulkOperationThread")
+			return
+		
 		with self._get_worker_lock(workerID):
 			self.workerBusy[workerID] = True
 
