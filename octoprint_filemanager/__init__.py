@@ -347,7 +347,7 @@ class FilemanagerPlugin(octoprint.plugin.TemplatePlugin,
 
 				# version check: github repository
 				type="github_release",
-				user="Salandora",
+				user="Cutyno",
 				repo="OctoPrint-FileManager",
 				current=self._plugin_version,
 
@@ -370,7 +370,7 @@ class FilemanagerPlugin(octoprint.plugin.TemplatePlugin,
 				],
 
 				# update method: pip
-				pip="https://github.com/Salandora/OctoPrint-FileManager/archive/{target_version}.zip"
+				pip="https://github.com/Cutyno/OctoPrint-FileManager/archive/{target_version}.zip"
 			)
 		)
 
