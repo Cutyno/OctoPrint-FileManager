@@ -157,13 +157,13 @@ class FilemanagerPlugin(octoprint.plugin.TemplatePlugin,
 
 		try:
 			len_sources = len(sources)
-			if command == "copy" or command == "move" and target == FileDestinations.LOCAL:
+			if command == "copy" or (command == "move" and target == FileDestinations.LOCAL):
 				for i, source in enumerate(sources):
 					with self._get_workerProgress_lock(workerID):
 						self.workerProgress[workerID]["progress"] = i / len_sources
 						self.workerProgress[workerID]["lastfile"] = source
-						self._plugin_manager.send_plugin_message(self._identifier,
-																dict(type="progress", workerID=workerID).update(self.workerProgress[workerID]))
+						progress_data = dict(type="progress", workerID=workerID, **self.workerProgress[workerID])
+						self._plugin_manager.send_plugin_message(self._identifier, progress_data)
 
 					self._copyMoveCommand(workerID, target, command, source,
 										destinations[i] if isinstance(destinations, list) else destinations)
@@ -172,8 +172,8 @@ class FilemanagerPlugin(octoprint.plugin.TemplatePlugin,
 					with self._get_workerProgress_lock(workerID):
 						self.workerProgress[workerID]["progress"] = i / len_sources
 						self.workerProgress[workerID]["lastfile"] = source
-						self._plugin_manager.send_plugin_message(self._identifier,
-																dict(type="progress", workerID=workerID).update(self.workerProgress[workerID]))
+						progress_data = dict(type="progress", workerID=workerID, **self.workerProgress[workerID])
+						self._plugin_manager.send_plugin_message(self._identifier, progress_data)
 
 					self._deleteCommand(workerID, target, source)
 		finally:
