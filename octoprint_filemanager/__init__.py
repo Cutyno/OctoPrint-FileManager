@@ -39,7 +39,10 @@ class FilemanagerPlugin(octoprint.plugin.TemplatePlugin,
 
 	def on_shutdown(self):
 		if any(self.workerBusy):
-			self._logger.warning("Some workers weren't ready, but OctoPrint got shutdown.")
+			self._logger.warning("Some workers are still busy, waiting for completion...")
+			self.workerPool.shutdown(wait=True, timeout=30.0)
+		else:
+			self.workerPool.shutdown(wait=False)
 
 	def get_assets(self):
 		return dict(
