@@ -19,6 +19,14 @@ class FilemanagerPlugin(octoprint.plugin.TemplatePlugin,
 						octoprint.plugin.BlueprintPlugin,
 						octoprint.plugin.ShutdownPlugin,
 						octoprint.plugin.SettingsPlugin):
+	
+	def is_template_autoescaped(self):
+		'''
+		You really shouldn't be doing that, as it increases the risk of making your plugin vulnerable to XSS and thus a security risk for the whole OctoPrint instance.
+		See https://community.octoprint.org/t/how-do-i-improve-my-plugins-security-by-enabling-autoescape/61067
+		'''
+		# TODO Fix this
+		return False
 
 	def initialize(self):
 		self._worker_lock_mutex = threading.RLock()
