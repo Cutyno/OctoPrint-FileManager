@@ -20,6 +20,9 @@ class FilemanagerPlugin(octoprint.plugin.TemplatePlugin,
 						octoprint.plugin.ShutdownPlugin,
 						octoprint.plugin.SettingsPlugin):
 	
+	def is_blueprint_csrf_protected(self):
+		return True
+	
 	def is_template_autoescaped(self):
 		'''
 		You really shouldn't be doing that, as it increases the risk of making your plugin vulnerable to XSS and thus a security risk for the whole OctoPrint instance.
